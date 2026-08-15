@@ -4,16 +4,16 @@
 .hero > p { color: var(--green-dark); font-size: .78rem; letter-spacing: .2em; text-transform: uppercase; }
 .hero h1 { max-width: 9ch; margin-top: 1.2rem; color: var(--green); font-family: var(--font-script); font-size: clamp(4.8rem, 13vw, 10.5rem); font-weight: 500; line-height: .72; letter-spacing: -.04em; }
 .hero h1 span { display: block; margin-top: .25em; transform: translateX(.2em) rotate(-2deg); }
-.scrollCue { position: absolute; bottom: 13vh; display: flex; align-items: center; gap: .65rem; color: var(--green-dark); font-size: .68rem; letter-spacing: .17em; text-transform: uppercase; }
-.scrollCue svg { width: 1rem; animation: nudge 1.8s ease-in-out infinite; }
+.openingLine { display: flex; align-items: center; gap: .7rem; margin-top: 3rem; color: var(--green-dark); font-family: var(--font-script); font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1; transform: rotate(-2deg); }
+.openingLine svg { width: 1.2rem; animation: nudge 1.8s ease-in-out infinite; }
 .heroPath { position: absolute; right: 0; bottom: 0; left: 0; width: 100%; height: 12vh; }
 .heroPath path { fill: none; stroke: var(--green); stroke-width: 14px; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 
-.pathSection { position: relative; height: 400vh; background: var(--cream); }
+.pathSection { position: relative; height: 200vh; background: var(--cream); }
+.firstPathSection { height: 100vh; }
 .pathSection svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .pathSection path { fill: none; stroke: var(--green); stroke-width: 14px; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .mirroredPath { transform: scaleX(-1); }
-.pathWhisper { position: sticky; top: 46vh; width: max-content; max-width: 70vw; margin-left: 14vw; color: var(--green-dark); font-family: var(--font-script); font-size: clamp(1.8rem, 5vw, 3.5rem); transform: rotate(-4deg); }
 .pathPaws { position: absolute; right: 12%; bottom: 16%; display: flex; gap: 2rem; color: var(--green); opacity: .6; transform: rotate(-26deg); }
 .pathPaws svg:nth-child(2) { transform: translateY(-1.4rem) rotate(14deg); }
 .pathPaws svg:nth-child(3) { transform: translateY(-2.7rem) rotate(-8deg); }
@@ -50,7 +50,8 @@
 @keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(.45rem); } }
 
 @media (max-width: 700px) {
-  .pathSection { height: 360vh; }
+  .pathSection { height: 180vh; }
+  .firstPathSection { height: 100vh; }
   .pathSection path, .eventPath path, .heroPath path { stroke-width: 12px; }
   .marker { --marker-size: 4.65rem; border-width: 4px; }
   .copy { padding: 2rem 1.4rem 3rem; }
@@ -58,4 +59,4 @@
   .sentence { max-width: 30rem; }
 }
 
-@media (prefers-reduced-motion: reduce) { .scrollCue svg { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .openingLine svg { animation: none; } }

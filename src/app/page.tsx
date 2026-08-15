@@ -24,11 +24,10 @@ function WindingPath({ index }: { index: number }) {
     : "M760 0 C930 310 870 670 610 980 C340 1290 110 1430 280 1880 C430 2290 900 2370 750 2820 C620 3220 300 3500 240 4000";
 
   return (
-    <section className={styles.pathSection} aria-label={first ? "The journey begins" : "Continue along our story"}>
+    <section className={`${styles.pathSection} ${first ? styles.firstPathSection : ""}`} aria-label={first ? "The journey begins" : "Continue along our story"}>
       <svg className={mirrored ? styles.mirroredPath : undefined} viewBox="0 0 1000 4000" preserveAspectRatio="none" aria-hidden="true">
         <path d={path} />
       </svg>
-      {first && <p className={styles.pathWhisper}>It started with a walk in the park…</p>}
       {index >= 5 && <div className={styles.pathPaws} aria-hidden="true"><PawPrint /><PawPrint /><PawPrint /></div>}
     </section>
   );
@@ -80,7 +79,7 @@ export default function Home() {
       <header className={styles.hero}>
         <p>A love story · 2017—2027</p>
         <h1>When Adam<span>Met Cathy</span></h1>
-        <div className={styles.scrollCue} aria-hidden="true"><span>Follow the path</span><MoveDown /></div>
+        <p className={styles.openingLine}>It started with a walk in the park… <MoveDown aria-hidden="true" /></p>
         <svg className={styles.heroPath} viewBox="0 0 1000 400" preserveAspectRatio="none" aria-hidden="true">
           <path d="M500 0 C675 86 316 178 515 270 C635 326 460 360 500 400" />
         </svg>
