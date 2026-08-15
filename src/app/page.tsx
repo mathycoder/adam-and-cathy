@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Heart, KeyRound, MapPin, MoveDown, PawPrint, Plane, Sparkles, Trees } from "lucide-react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { type CSSProperties, useRef } from "react";
@@ -57,8 +58,18 @@ function EventReveal({ chapter, index }: { chapter: Chapter; index: number }) {
           <Icon />
         </motion.div>
         <motion.article className={`${styles.photo} ${styles[chapter.tone]}`} style={{ scale, opacity: photoOpacity, borderRadius }}>
+          {index === 0 && (
+            <Image
+              className={styles.eventImage}
+              src="/images/walk-in-the-park.jpg"
+              alt="Adam and Cathy together by the lake in Central Park"
+              fill
+              priority
+              sizes="100vw"
+            />
+          )}
           <div className={styles.photoTexture} aria-hidden="true" />
-          <div className={styles.placeholder} aria-hidden="true"><Icon strokeWidth={1.1} /><span>Portrait photo</span></div>
+          {index !== 0 && <div className={styles.placeholder} aria-hidden="true"><Icon strokeWidth={1.1} /><span>Portrait photo</span></div>}
           <div className={styles.scrim} />
           <motion.div className={styles.copy} style={{ opacity: textOpacity, y: textY }}>
             <p className={styles.number}>Chapter {String(index + 1).padStart(2, "0")}</p>
