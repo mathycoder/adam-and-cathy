@@ -51,7 +51,9 @@ function EventReveal({ chapter, index }: { chapter: Chapter; index: number }) {
   return (
     <section ref={ref} className={styles.eventSection} style={position} aria-labelledby={`event-${index}`}>
       <div className={styles.eventStage}>
-        <div className={styles.connector} aria-hidden="true" />
+        <svg className={`${styles.eventPath} ${index % 2 ? styles.mirroredEventPath : ""}`} viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M240 0 C240 105 545 120 525 290 C510 408 322 420 240 500 C126 610 118 720 278 835 C338 878 248 946 240 1000" />
+        </svg>
         <motion.div className={styles.marker} style={{ opacity: markerOpacity, scale: markerScale }} aria-hidden="true">
           <Icon />
         </motion.div>
@@ -79,6 +81,9 @@ export default function Home() {
         <p>A love story · 2017—2027</p>
         <h1>When Adam<span>Met Cathy</span></h1>
         <div className={styles.scrollCue} aria-hidden="true"><span>Follow the path</span><MoveDown /></div>
+        <svg className={styles.heroPath} viewBox="0 0 1000 400" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M500 0 C675 86 316 178 515 270 C635 326 460 360 500 400" />
+        </svg>
       </header>
 
       {chapters.map((chapter, index) => (

@@ -1,12 +1,13 @@
 .page { background: var(--cream); overflow: clip; }
 
 .hero { position: relative; min-height: 100svh; display: grid; place-content: center; justify-items: center; padding: 4rem 1.5rem; text-align: center; }
-.hero::after { content: ""; position: absolute; bottom: 0; left: calc(50% - 7px); width: 14px; height: 11vh; background: var(--green); border-radius: 999px 999px 0 0; }
 .hero > p { color: var(--green-dark); font-size: .78rem; letter-spacing: .2em; text-transform: uppercase; }
 .hero h1 { max-width: 9ch; margin-top: 1.2rem; color: var(--green); font-family: var(--font-script); font-size: clamp(4.8rem, 13vw, 10.5rem); font-weight: 500; line-height: .72; letter-spacing: -.04em; }
 .hero h1 span { display: block; margin-top: .25em; transform: translateX(.2em) rotate(-2deg); }
 .scrollCue { position: absolute; bottom: 13vh; display: flex; align-items: center; gap: .65rem; color: var(--green-dark); font-size: .68rem; letter-spacing: .17em; text-transform: uppercase; }
 .scrollCue svg { width: 1rem; animation: nudge 1.8s ease-in-out infinite; }
+.heroPath { position: absolute; right: 0; bottom: 0; left: 0; width: 100%; height: 12vh; }
+.heroPath path { fill: none; stroke: var(--green); stroke-width: 14px; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 
 .pathSection { position: relative; height: 400vh; background: var(--cream); }
 .pathSection svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
@@ -19,9 +20,11 @@
 
 .eventSection { position: relative; height: 820vh; background: var(--cream); }
 .eventStage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
-.connector { position: absolute; top: 0; bottom: 0; left: calc(var(--anchor) - 7px); width: 14px; background: var(--green); }
-.marker { --marker-size: clamp(5.5rem, 10vw, 7.5rem); position: absolute; z-index: 3; top: calc(50% - var(--marker-size) / 2); left: calc(var(--anchor) - var(--marker-size) / 2); display: grid; place-items: center; width: var(--marker-size); aspect-ratio: 1; color: var(--green); background: var(--cream); border: 14px solid var(--green); border-radius: 50%; }
-.marker svg { width: 42%; height: 42%; stroke-width: 1.6; }
+.eventPath { position: absolute; inset: 0; width: 100%; height: 100%; }
+.eventPath path { fill: none; stroke: var(--green); stroke-width: 14px; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.mirroredEventPath { transform: scaleX(-1); }
+.marker { --marker-size: clamp(4.5rem, 8vw, 5.75rem); position: absolute; z-index: 3; top: calc(50% - var(--marker-size) / 2); left: calc(var(--anchor) - var(--marker-size) / 2); display: grid; place-items: center; width: var(--marker-size); aspect-ratio: 1; color: var(--green); background: var(--cream); border: 5px solid var(--green); border-radius: 50%; }
+.marker svg { width: 44%; height: 44%; stroke-width: 1.7; }
 .photo { position: absolute; z-index: 2; inset: 0; width: 100vw; height: 100svh; overflow: hidden; color: #fffdf8; transform-origin: var(--anchor) 50%; pointer-events: none; isolation: isolate; }
 .photoTexture, .scrim { position: absolute; inset: 0; }
 .photoTexture { z-index: -2; opacity: .75; background: radial-gradient(circle at 24% 22%, rgba(255,255,255,.42), transparent 25%), radial-gradient(circle at 78% 68%, rgba(255,255,255,.2), transparent 24%), linear-gradient(140deg, transparent 32%, rgba(24,40,28,.27)); }
@@ -48,9 +51,8 @@
 
 @media (max-width: 700px) {
   .pathSection { height: 360vh; }
-  .pathSection path, .connector { stroke-width: 12px; }
-  .connector { width: 12px; left: calc(var(--anchor) - 6px); }
-  .marker { --marker-size: 5.8rem; border-width: 12px; }
+  .pathSection path, .eventPath path, .heroPath path { stroke-width: 12px; }
+  .marker { --marker-size: 4.65rem; border-width: 4px; }
   .copy { padding: 2rem 1.4rem 3rem; }
   .copy h2 { font-size: clamp(4rem, 19vw, 6rem); }
   .sentence { max-width: 30rem; }
