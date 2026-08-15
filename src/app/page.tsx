@@ -1,7 +1,7 @@
 "use client";
 
 import { Heart, KeyRound, MapPin, MoveDown, PawPrint, Plane, Sparkles, Trees } from "lucide-react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { type CSSProperties, useRef } from "react";
 import styles from "./page.module.css";
 
@@ -36,15 +36,15 @@ function WindingPath({ index }: { index: number }) {
 
 function EventReveal({ chapter, index }: { chapter: Chapter; index: number }) {
   const ref = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const anchor = index % 2 === 0 ? "24%" : "76%";
-  const scale = useTransform(scrollYProgress, [0, 0.14, 0.34, 0.66, 0.86, 1], reduceMotion ? [1, 1, 1, 1, 1, 1] : [0.055, 0.055, 1, 1, 0.055, 0.055]);
-  const photoOpacity = useTransform(scrollYProgress, [0.06, 0.13, 0.84, 0.92], reduceMotion ? [1, 1, 1, 1] : [0, 1, 1, 0]);
-  const markerOpacity = useTransform(scrollYProgress, [0.09, 0.17, 0.82, 0.9], reduceMotion ? [0, 0, 0, 0] : [1, 0, 0, 1]);
+  const scale = useTransform(scrollYProgress, [0, 0.14, 0.34, 0.66, 0.86, 1], [0.055, 0.055, 1, 1, 0.055, 0.055]);
+  const borderRadius = useTransform(scrollYProgress, [0.1, 0.18, 0.34, 0.66, 0.82, 0.9], ["50%", "50%", "0%", "0%", "50%", "50%"]);
+  const photoOpacity = useTransform(scrollYProgress, [0.06, 0.13, 0.84, 0.92], [0, 1, 1, 0]);
+  const markerOpacity = useTransform(scrollYProgress, [0.09, 0.17, 0.82, 0.9], [1, 0, 0, 1]);
   const markerScale = useTransform(scrollYProgress, [0, 0.14, 0.2, 0.8, 0.86, 1], [1, 1, 0.72, 0.72, 1, 1]);
-  const textOpacity = useTransform(scrollYProgress, [0.31, 0.4, 0.61, 0.7], reduceMotion ? [1, 1, 1, 1] : [0, 1, 1, 0]);
-  const textY = useTransform(scrollYProgress, [0.31, 0.43, 0.66], reduceMotion ? [0, 0, 0] : [32, 0, -20]);
+  const textOpacity = useTransform(scrollYProgress, [0.31, 0.4, 0.61, 0.7], [0, 1, 1, 0]);
+  const textY = useTransform(scrollYProgress, [0.31, 0.43, 0.66], [32, 0, -20]);
   const Icon = chapter.icon;
   const position = { "--anchor": anchor } as CSSProperties;
 
@@ -55,7 +55,7 @@ function EventReveal({ chapter, index }: { chapter: Chapter; index: number }) {
         <motion.div className={styles.marker} style={{ opacity: markerOpacity, scale: markerScale }} aria-hidden="true">
           <Icon />
         </motion.div>
-        <motion.article className={`${styles.photo} ${styles[chapter.tone]}`} style={{ scale, opacity: photoOpacity }}>
+        <motion.article className={`${styles.photo} ${styles[chapter.tone]}`} style={{ scale, opacity: photoOpacity, borderRadius }}>
           <div className={styles.photoTexture} aria-hidden="true" />
           <div className={styles.placeholder} aria-hidden="true"><Icon strokeWidth={1.1} /><span>Portrait photo</span></div>
           <div className={styles.scrim} />

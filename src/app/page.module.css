@@ -22,7 +22,7 @@
 .connector { position: absolute; top: 0; bottom: 0; left: calc(var(--anchor) - 7px); width: 14px; background: var(--green); }
 .marker { --marker-size: clamp(5.5rem, 10vw, 7.5rem); position: absolute; z-index: 3; top: calc(50% - var(--marker-size) / 2); left: calc(var(--anchor) - var(--marker-size) / 2); display: grid; place-items: center; width: var(--marker-size); aspect-ratio: 1; color: var(--green); background: var(--cream); border: 14px solid var(--green); border-radius: 50%; }
 .marker svg { width: 42%; height: 42%; stroke-width: 1.6; }
-.photo { position: absolute; z-index: 2; inset: 0; width: 100vw; height: 100svh; overflow: hidden; color: #fffdf8; transform-origin: var(--anchor) 50%; isolation: isolate; }
+.photo { position: absolute; z-index: 2; inset: 0; width: 100vw; height: 100svh; overflow: hidden; color: #fffdf8; transform-origin: var(--anchor) 50%; pointer-events: none; isolation: isolate; }
 .photoTexture, .scrim { position: absolute; inset: 0; }
 .photoTexture { z-index: -2; opacity: .75; background: radial-gradient(circle at 24% 22%, rgba(255,255,255,.42), transparent 25%), radial-gradient(circle at 78% 68%, rgba(255,255,255,.2), transparent 24%), linear-gradient(140deg, transparent 32%, rgba(24,40,28,.27)); }
 .sage { background: #78927a; } .rose { background: #b78180; } .gold { background: #bd9252; } .blue { background: #6f8d98; } .peach { background: #b9785f; } .green { background: #467d4c; }
@@ -56,7 +56,4 @@
   .sentence { max-width: 30rem; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .scrollCue svg { animation: none; }
-  .eventSection { height: 120svh; }
-}
+@media (prefers-reduced-motion: reduce) { .scrollCue svg { animation: none; } }
