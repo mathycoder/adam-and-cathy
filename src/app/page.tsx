@@ -1,8 +1,8 @@
 "use client";
 
-import { Heart, KeyRound, MapPin, MoveRight, PawPrint, Plane, Sparkles, Trees } from "lucide-react";
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
-import { useRef } from "react";
+import { Heart, KeyRound, MapPin, MoveDown, PawPrint, Plane, Sparkles, Trees } from "lucide-react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { type CSSProperties, useRef } from "react";
 import styles from "./page.module.css";
 
 const chapters = [
@@ -16,70 +16,84 @@ const chapters = [
 
 type Chapter = (typeof chapters)[number];
 
-function StoryChapter({ chapter, index }: { chapter: Chapter; index: number }) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
-  const scale = useTransform(scrollYProgress, [0.04, 0.32, 0.68, 0.96], reduceMotion ? [1, 1, 1, 1] : [0.28, 1, 1, 0.28]);
-  const radius = useTransform(scrollYProgress, [0.12, 0.35, 0.65, 0.88], reduceMotion ? [24, 24, 24, 24] : [140, 0, 0, 140]);
-  const copyOpacity = useTransform(scrollYProgress, [0.2, 0.36, 0.67, 0.82], reduceMotion ? [1, 1, 1, 1] : [0, 1, 1, 0]);
-  const copyY = useTransform(scrollYProgress, [0.25, 0.42, 0.7], reduceMotion ? [0, 0, 0] : [24, 0, -10]);
-  const Icon = chapter.icon;
+function WindingPath({ index }: { index: number }) {
+  const mirrored = index % 2 === 1;
+  const first = index === 0;
+  const path = first
+    ? "M500 0 C760 220 900 590 690 940 C490 1260 120 1340 260 1810 C390 2240 900 2250 760 2780 C650 3200 290 3450 240 4000"
+    : "M760 0 C930 310 870 670 610 980 C340 1290 110 1430 280 1880 C430 2290 900 2370 750 2820 C620 3220 300 3500 240 4000";
 
   return (
-    <section ref={sectionRef} className={styles.chapter} aria-labelledby={`chapter-${index}`}>
-      <div className={styles.stickyFrame}>
-        <motion.article className={`${styles.photo} ${styles[chapter.tone]}`} style={{ scale, borderRadius: radius }}>
+    <section className={styles.pathSection} aria-label={first ? "The journey begins" : "Continue along our story"}>
+      <svg className={mirrored ? styles.mirroredPath : undefined} viewBox="0 0 1000 4000" preserveAspectRatio="none" aria-hidden="true">
+        <path d={path} />
+      </svg>
+      {first && <p className={styles.pathWhisper}>It started with a walk in the park…</p>}
+      {index >= 5 && <div className={styles.pathPaws} aria-hidden="true"><PawPrint /><PawPrint /><PawPrint /></div>}
+    </section>
+  );
+}
+
+function EventReveal({ chapter, index }: { chapter: Chapter; index: number }) {
+  const ref = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const anchor = index % 2 === 0 ? "24%" : "76%";
+  const scale = useTransform(scrollYProgress, [0, 0.14, 0.34, 0.66, 0.86, 1], reduceMotion ? [1, 1, 1, 1, 1, 1] : [0.055, 0.055, 1, 1, 0.055, 0.055]);
+  const photoOpacity = useTransform(scrollYProgress, [0.06, 0.13, 0.84, 0.92], reduceMotion ? [1, 1, 1, 1] : [0, 1, 1, 0]);
+  const markerOpacity = useTransform(scrollYProgress, [0.09, 0.17, 0.82, 0.9], reduceMotion ? [0, 0, 0, 0] : [1, 0, 0, 1]);
+  const markerScale = useTransform(scrollYProgress, [0, 0.14, 0.2, 0.8, 0.86, 1], [1, 1, 0.72, 0.72, 1, 1]);
+  const textOpacity = useTransform(scrollYProgress, [0.31, 0.4, 0.61, 0.7], reduceMotion ? [1, 1, 1, 1] : [0, 1, 1, 0]);
+  const textY = useTransform(scrollYProgress, [0.31, 0.43, 0.66], reduceMotion ? [0, 0, 0] : [32, 0, -20]);
+  const Icon = chapter.icon;
+  const position = { "--anchor": anchor } as CSSProperties;
+
+  return (
+    <section ref={ref} className={styles.eventSection} style={position} aria-labelledby={`event-${index}`}>
+      <div className={styles.eventStage}>
+        <div className={styles.connector} aria-hidden="true" />
+        <motion.div className={styles.marker} style={{ opacity: markerOpacity, scale: markerScale }} aria-hidden="true">
+          <Icon />
+        </motion.div>
+        <motion.article className={`${styles.photo} ${styles[chapter.tone]}`} style={{ scale, opacity: photoOpacity }}>
           <div className={styles.photoTexture} aria-hidden="true" />
-          <div className={styles.placeholder} aria-hidden="true"><Icon strokeWidth={1.25} /><span>Portrait photo</span></div>
+          <div className={styles.placeholder} aria-hidden="true"><Icon strokeWidth={1.1} /><span>Portrait photo</span></div>
           <div className={styles.scrim} />
-          <motion.div className={styles.chapterCopy} style={{ opacity: copyOpacity, y: copyY }}>
-            <span className={styles.chapterNumber}>{String(index + 1).padStart(2, "0")}</span>
-            <h2 id={`chapter-${index}`}>{chapter.title}</h2>
+          <motion.div className={styles.copy} style={{ opacity: textOpacity, y: textY }}>
+            <p className={styles.number}>Chapter {String(index + 1).padStart(2, "0")}</p>
+            <h2 id={`event-${index}`}>{chapter.title}</h2>
             <p className={styles.date}>{chapter.date}</p>
             <p className={styles.location}><MapPin aria-hidden="true" />{chapter.location}</p>
             <p className={styles.sentence}>{chapter.sentence}</p>
           </motion.div>
         </motion.article>
-        <div className={`${styles.marker} ${index % 2 ? styles.markerLeft : styles.markerRight}`} aria-hidden="true"><Icon /></div>
-        {index >= 4 && <div className={styles.pawTrail} aria-hidden="true"><PawPrint /><PawPrint /><PawPrint /></div>}
       </div>
     </section>
-  );
-}
-
-function JourneyPath() {
-  const reduceMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll();
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 65, damping: 22, restDelta: 0.001 });
-  const d = "M500 0 C850 200 870 620 690 900 C470 1230 150 1120 180 1590 C210 2030 830 1850 810 2390 C790 2840 150 2670 190 3240 C225 3710 850 3550 810 4100 C775 4560 150 4400 190 4980 C220 5440 830 5260 800 5820 C775 6280 210 6180 300 6740 C360 7130 720 7110 540 7600";
-  return (
-    <svg className={styles.journeyPath} viewBox="0 0 1000 7600" preserveAspectRatio="none" aria-hidden="true">
-      <path className={styles.pathShadow} d={d} />
-      <motion.path className={styles.pathLine} d={d} style={{ pathLength: reduceMotion ? 1 : smoothProgress }} />
-    </svg>
   );
 }
 
 export default function Home() {
   return (
     <main className={styles.page}>
-      <JourneyPath />
-      <section className={styles.hero}>
-        <div className={styles.heroDoodle} aria-hidden="true"><Heart /></div>
-        <p className={styles.eyebrow}>A love story · 2017—2027</p>
+      <header className={styles.hero}>
+        <p>A love story · 2017—2027</p>
         <h1>When Adam<span>Met Cathy</span></h1>
-        <p className={styles.heroCopy}>Six moments, two cities, one very good girl, and a lifetime still to come.</p>
-        <div className={styles.scrollCue} aria-hidden="true"><span>Follow our story</span><MoveRight /></div>
-      </section>
-      <div className={styles.story}>{chapters.map((chapter, index) => <StoryChapter key={chapter.title} chapter={chapter} index={index} />)}</div>
-      <section className={styles.finale}>
-        <div className={styles.finaleIcon} aria-hidden="true"><PawPrint /><Heart /></div>
-        <p className={styles.script}>Ten years and one day later…</p>
+        <div className={styles.scrollCue} aria-hidden="true"><span>Follow the path</span><MoveDown /></div>
+      </header>
+
+      {chapters.map((chapter, index) => (
+        <div key={chapter.title}>
+          <WindingPath index={index} />
+          <EventReveal chapter={chapter} index={index} />
+        </div>
+      ))}
+
+      <footer className={styles.finale}>
+        <div aria-hidden="true"><PawPrint /><Heart /></div>
+        <p>Ten years and one day later…</p>
         <h2>Our best chapter begins.</h2>
-        <p>Thank you for being part of our story.</p>
-        <a href="#" onClick={(event) => event.preventDefault()}>Return to main site<MoveRight aria-hidden="true" /></a>
-      </section>
+        <a href="#" onClick={(event) => event.preventDefault()}>Return to main site</a>
+      </footer>
     </main>
   );
 }
