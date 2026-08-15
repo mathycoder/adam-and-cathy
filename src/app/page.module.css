@@ -17,7 +17,7 @@
 .pathPaws svg:nth-child(2) { transform: translateY(-1.4rem) rotate(14deg); }
 .pathPaws svg:nth-child(3) { transform: translateY(-2.7rem) rotate(-8deg); }
 
-.eventSection { position: relative; height: 340vh; background: var(--cream); }
+.eventSection { position: relative; height: 820vh; background: var(--cream); }
 .eventStage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
 .connector { position: absolute; top: 0; bottom: 0; left: calc(var(--anchor) - 7px); width: 14px; background: var(--green); }
 .marker { --marker-size: clamp(5.5rem, 10vw, 7.5rem); position: absolute; z-index: 3; top: calc(50% - var(--marker-size) / 2); left: calc(var(--anchor) - var(--marker-size) / 2); display: grid; place-items: center; width: var(--marker-size); aspect-ratio: 1; color: var(--green); background: var(--cream); border: 14px solid var(--green); border-radius: 50%; }
