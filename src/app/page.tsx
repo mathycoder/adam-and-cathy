@@ -15,6 +15,12 @@ const chapters = [
   { title: "We Tie the Knot", date: "May 8, 2027", location: "Atlanta, Georgia", sentence: "Ten years and one day after we met, we begin our next chapter together.", icon: Sparkles, tone: "green" },
 ] as const;
 
+const eventImages: Array<{ src: string; alt: string; position: string } | undefined> = [
+  { src: "/images/walk-in-the-park.jpg", alt: "Adam and Cathy together by the lake in Central Park", position: "50% 72%" },
+  { src: "/images/moved-to-brooklyn.jpg", alt: "Adam and Cathy together in their Brooklyn home", position: "50% 50%" },
+  { src: "/images/moved-to-atlanta.jpg", alt: "Cathy celebrating beside the Welcome to Georgia sign", position: "50% 48%" },
+];
+
 type Chapter = (typeof chapters)[number];
 
 function WindingPath({ index }: { index: number }) {
@@ -46,6 +52,7 @@ function EventReveal({ chapter, index }: { chapter: Chapter; index: number }) {
   const textOpacity = useTransform(scrollYProgress, [0.31, 0.4, 0.61, 0.7], [0, 1, 1, 0]);
   const textY = useTransform(scrollYProgress, [0.31, 0.43, 0.66], [32, 0, -20]);
   const Icon = chapter.icon;
+  const eventImage = eventImages[index];
   const position = { "--anchor": anchor } as CSSProperties;
 
   return (
@@ -58,18 +65,19 @@ function EventReveal({ chapter, index }: { chapter: Chapter; index: number }) {
           <Icon />
         </motion.div>
         <motion.article className={`${styles.photo} ${styles[chapter.tone]}`} style={{ scale, opacity: photoOpacity, borderRadius }}>
-          {index === 0 && (
+          {eventImage && (
             <Image
               className={styles.eventImage}
-              src="/images/walk-in-the-park.jpg"
-              alt="Adam and Cathy together by the lake in Central Park"
+              src={eventImage.src}
+              alt={eventImage.alt}
               fill
-              priority
+              priority={index === 0}
               sizes="100vw"
+              style={{ objectPosition: eventImage.position }}
             />
           )}
           <div className={styles.photoTexture} aria-hidden="true" />
-          {index !== 0 && <div className={styles.placeholder} aria-hidden="true"><Icon strokeWidth={1.1} /><span>Portrait photo</span></div>}
+          {!eventImage && <div className={styles.placeholder} aria-hidden="true"><Icon strokeWidth={1.1} /><span>Portrait photo</span></div>}
           <div className={styles.scrim} />
           <motion.div className={styles.copy} style={{ opacity: textOpacity, y: textY }}>
             <p className={styles.number}>Chapter {String(index + 1).padStart(2, "0")}</p>
