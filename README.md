@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# When Adam Met Cathy
 
-## Getting Started
+A mobile-first, scroll-driven wedding story built with Next.js. Guests follow a winding path through six photographs, from Adam and Cathy's first walk in Central Park to their wedding day ten years and one day later.
 
-First, run the development server:
+## Tech stack
+
+- Next.js App Router
+- React and TypeScript
+- Motion for scroll-linked animation
+- `next/image` for responsive image delivery
+- Lucide React for supporting icons
+- CSS Modules for locally scoped styles
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Before committing a change, run:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run build
+```
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```text
+src/
+├── app/
+│   ├── layout.tsx          # Site metadata, fonts, and root document
+│   ├── page.tsx            # Small Server Component that composes the story
+│   └── page.module.css     # Story layout and visual styling
+├── components/
+│   └── story/
+│       ├── EventReveal.tsx # Client-only scroll animation
+│       ├── StoryFinale.tsx
+│       ├── StoryHero.tsx
+│       └── WindingPath.tsx
+└── data/
+    └── story.ts            # Typed chapter copy and photo configuration
+public/
+└── images/                 # Original story photographs
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The route remains a Server Component. Only `EventReveal` declares `"use client"`, because it needs refs and scroll-linked Motion hooks. This keeps the interactive boundary as narrow as possible.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Development conventions
 
-## Deploy on Vercel
+- Keep route files focused on composition. Reusable or independently understandable UI belongs in `src/components`.
+- Keep chapter content in `src/data/story.ts`; do not duplicate story copy or maintain parallel chapter and image arrays.
+- Prefer typed props and derived values over duplicating data in React state.
+- Add client boundaries only when a component needs browser APIs, event handlers, state, effects, refs, or client-only hooks.
+- Give every meaningful photograph descriptive alt text. Decorative paths and icons should remain hidden from assistive technology.
+- Preserve the original photograph when it is already a browser-supported JPG, PNG, or WebP. Avoid unnecessary re-encoding and use a new filename when replacing a cached asset.
+- Keep animation driven by scroll progress so it works with mouse wheels, trackpads, touch, and keyboard scrolling without wheel-event interception.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Editing the story
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Each entry in `src/data/story.ts` owns its copy and photo presentation:
+
+```ts
+{
+  title: "The Day We Met",
+  date: "May 7, 2017",
+  location: "Central Park, New York",
+  sentence: "...",
+  photo: {
+    src: "/images/walk-in-the-park.jpg",
+    alt: "...",
+    position: "50% 72%",
+    orientation: "landscape",
+  },
+}
+```
+
+- `orientation` accepts `"landscape"` (4:3) or `"portrait"` (2:3). It does not change between desktop and mobile.
+- `position` maps to CSS `object-position` and controls the focal point when the photograph is cropped.
+- Put local files in `public/images` and reference them from the site root, such as `/images/photo.jpg`.
+
+## Scroll choreography
+
+Every event uses the same normalized progress timeline:
+
+| Progress | Behavior |
+| --- | --- |
+| `0 → 0.533` | The photograph immediately grows, straightens, and moves toward center as the stage pins. |
+| `0.533 → 0.7` | The text appears and begins its 64px journey while the photograph finishes opening. |
+| `0.7 → 1` | The fully open photograph holds only while the text gently completes its movement. |
+| After `1` | The sticky stage immediately releases, so the open photograph scrolls naturally out of view and reveals the next path. |
+
+The physical scroll distance is set by `.eventSection` in `page.module.css`. The normalized phase timing lives in `EventReveal.tsx`.
+
+## Deployment
+
+The repository is ready for Vercel. Import the GitHub repository into Vercel and use the detected Next.js defaults; no environment variables are currently required.
+
+## Practice references
+
+This project structure follows the current official guidance rather than treating one folder layout as universally required:
+
+- [Next.js project structure and colocation](https://nextjs.org/docs/app/getting-started/project-structure)
+- [Next.js Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components)
+- [React: Thinking in React](https://react.dev/learn/thinking-in-react)
+- [React: Choosing the state structure](https://react.dev/learn/choosing-the-state-structure)
