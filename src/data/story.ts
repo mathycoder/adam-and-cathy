@@ -1,5 +1,46 @@
 export type PhotoOrientation = "landscape" | "portrait";
 export type PathScene = "first-walk" | "brooklyn" | "moving" | "engagement" | "charlie";
+export type GraphicName =
+  | "opening-skyline"
+  | "opening-trees-a"
+  | "opening-trees-b"
+  | "opening-park-sign"
+  | "opening-trees-c"
+  | "opening-bench"
+  | "opening-trees-d"
+  | "opening-leaf-a"
+  | "opening-leaf-b"
+  | "brownstone-row"
+  | "brooklyn-bridge"
+  | "home-heart"
+  | "neighborhood-trees"
+  | "brooklyn-cluster"
+  | "box-cluster"
+  | "southern-trees"
+  | "atlanta-sign"
+  | "moving-leaf-a"
+  | "moving-leaf-b"
+  | "moving-truck"
+  | "return-skyline"
+  | "return-park-trees"
+  | "return-bench"
+  | "proposal-spark"
+  | "return-leaf-a"
+  | "return-leaf-b"
+  | "charlie-paw-1"
+  | "charlie-paw-2"
+  | "charlie-paw-3"
+  | "charlie-paw-4"
+  | "charlie-paw-5"
+  | "charlie-paw-6"
+  | "charlie-teaser";
+
+export type GraphicClassNames = Partial<Record<GraphicName, string>>;
+
+export type StoryApproach = {
+  scene: PathScene;
+  graphicClassNames?: GraphicClassNames;
+};
 
 export type StoryChapter = {
   title: string;
@@ -13,9 +54,7 @@ export type StoryChapter = {
     position: string;
     orientation: PhotoOrientation;
   };
-  approach?: {
-    scene: PathScene;
-  };
+  approach?: StoryApproach;
 };
 
 export const chapters = [

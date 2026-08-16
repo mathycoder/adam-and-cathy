@@ -67,7 +67,7 @@ Charlie first appears in the fifth chapter, then becomes a supporting character 
 - Motion for scroll-linked animation
 - `next/image` for responsive image delivery
 - Lucide React for supporting icons
-- CSS Modules for locally scoped styles
+- Tailwind CSS v4 for component and responsive styling
 
 ## Getting started
 
@@ -92,20 +92,23 @@ src/
 ├── app/
 │   ├── layout.tsx          # Site metadata, fonts, and root document
 │   ├── page.tsx            # Small Server Component that composes the story
-│   └── page.module.css     # Story layout and visual styling
+│   └── globals.css         # Tailwind theme tokens and animation keyframes
 ├── components/
 │   └── story/
 │       ├── EventReveal.tsx # Client-only scroll animation
+│       ├── PathScenery.tsx # Static illustrated scene graphics
 │       ├── StoryFinale.tsx
 │       ├── StoryHero.tsx
 │       └── WindingPath.tsx
+├── lib/
+│   └── cn.ts               # Tailwind-aware class composition helper
 └── data/
     └── story.ts            # Typed chapter copy and photo configuration
 public/
 └── images/                 # Original story photographs
 ```
 
-The route remains a Server Component. Only `EventReveal` declares `"use client"`, because it needs refs and scroll-linked Motion hooks. This keeps the interactive boundary as narrow as possible.
+The route remains a Server Component. `EventReveal` and the moving-truck scene declare `"use client"` because they need refs and scroll-linked Motion hooks. Static scenery remains server-rendered, keeping the interactive boundary narrow.
 
 ## Development conventions
 
@@ -141,6 +144,22 @@ Each entry in `src/data/story.ts` owns its copy and photo presentation:
 - `position` maps to CSS `object-position` and controls the focal point when the photograph is cropped.
 - Put local files in `public/images` and reference them from the site root, such as `/images/photo.jpg`.
 
+### Repositioning illustrated graphics
+
+Every illustration has a stable class such as `graphic--opening-skyline` and a matching `data-graphic` attribute for browser inspection. A chapter can override a graphic's default Tailwind positioning through its approach data:
+
+```ts
+approach: {
+  scene: "first-walk",
+  graphicClassNames: {
+    "opening-skyline": "top-[5%] left-[2%] story:left-[6%]",
+    "opening-trees-a": "top-[11%] right-[-3%] story:right-[4%]",
+  },
+},
+```
+
+Overrides are merged after the defaults with `tailwind-merge`, so conflicting utilities such as `top-[5%]` replace the component's default `top-*` value. Keep every Tailwind class complete and literal so Tailwind can detect it at build time; do not construct utility names from string fragments.
+
 ## Scroll choreography
 
 Every event uses the same normalized progress timeline:
@@ -152,7 +171,7 @@ Every event uses the same normalized progress timeline:
 | `0.7 → 1` | The fully open photograph holds only while the text gently completes its movement. |
 | After `1` | The sticky stage immediately releases, so the open photograph scrolls naturally out of view and reveals the next path. |
 
-The physical scroll distance is set by `.eventSection` in `page.module.css`. The normalized phase timing lives in `EventReveal.tsx`.
+The physical scroll distance is set by the `h-[352vh]` section utility in `EventReveal.tsx`. The normalized phase timing lives alongside it in that component.
 The text travels 64px on larger screens and 32px at the mobile breakpoint while using the same scroll timing.
 
 Reveals are one-way during a page visit. After a photograph reaches its open state, reversing direction keeps the photograph and text open and crosses that event's pinned range in one immediate jump. The open state is committed before moving the page so mobile browsers do not briefly paint the closed frame. Re-entering the same opened event from above also skips the reveal, so revisiting a chapter does not introduce an inactive pinned interval.

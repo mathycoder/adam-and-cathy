@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Caveat, Jost } from "next/font/google";
+import { cn } from "@/lib/cn";
 import "./globals.css";
 
 const caveat = Caveat({ variable: "--font-caveat", subsets: ["latin"], display: "swap" });
@@ -11,5 +12,18 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" className={`${caveat.variable} ${jost.variable}`}><body>{children}</body></html>;
+  return (
+    <html
+      lang="en"
+      className={cn(
+        caveat.variable,
+        jost.variable,
+        "max-w-[100vw] snap-y snap-proximity scroll-smooth bg-cream motion-reduce:snap-none motion-reduce:scroll-auto",
+      )}
+    >
+      <body className="min-h-full max-w-[100vw] overflow-x-hidden bg-cream font-sans text-ink antialiased selection:bg-green selection:text-cream">
+        {children}
+      </body>
+    </html>
+  );
 }

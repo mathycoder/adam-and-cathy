@@ -3,16 +3,15 @@ import { StoryFinale } from "@/components/story/StoryFinale";
 import { StoryHero } from "@/components/story/StoryHero";
 import { WindingPath } from "@/components/story/WindingPath";
 import { chapters } from "@/data/story";
-import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <main className={styles.page}>
+    <main className="overflow-clip bg-cream [--trail-highlight:#d7dfbd] [--trail-surface:#afc99b]">
       <StoryHero />
 
       {chapters.map((chapter, index) => (
         <div key={chapter.title}>
-          <WindingPath index={index} scene={chapter.approach?.scene} />
+          <WindingPath index={index} approach={chapter.approach} />
           <EventReveal chapter={chapter} index={index} />
         </div>
       ))}

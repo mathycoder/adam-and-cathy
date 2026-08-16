@@ -1,17 +1,42 @@
-:root {
-  --cream: #ebe0d2;
-  --green: #579d59;
-  --green-dark: #3f7745;
-  --ink: #263328;
-  --ink-soft: #566158;
+@import "tailwindcss";
+
+@theme inline {
+  --color-cream: #ebe0d2;
+  --color-green: #579d59;
+  --color-green-dark: #3f7745;
+  --color-ink: #263328;
+  --color-ink-soft: #566158;
   --font-script: var(--font-caveat), cursive;
   --font-sans: var(--font-jost), sans-serif;
+  --breakpoint-story: 43.8125rem;
+  --animate-nudge: nudge 1.8s ease-in-out infinite;
+  --animate-scene-sway: scene-sway 5.8s ease-in-out infinite;
+  --animate-leaf-drift: leaf-drift 7s ease-in-out infinite;
+  --animate-sparkle-pulse: sparkle-pulse 2.6s ease-in-out infinite;
+  --animate-paw-hello: paw-hello 3.6s ease-in-out infinite;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { max-width: 100vw; background: var(--cream); scroll-behavior: smooth; scroll-snap-type: y proximity; }
-body { min-height: 100%; max-width: 100vw; overflow-x: hidden; color: var(--ink); background: var(--cream); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
-a { color: inherit; text-decoration: none; }
-button, a { -webkit-tap-highlight-color: transparent; }
-::selection { color: var(--cream); background: var(--green); }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; scroll-snap-type: none; } }
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(.45rem); }
+}
+
+@keyframes scene-sway {
+  0%, 100% { transform: rotate(-1deg); }
+  50% { transform: rotate(1.5deg); }
+}
+
+@keyframes leaf-drift {
+  0%, 100% { translate: 0 0; rotate: -12deg; }
+  50% { translate: -1.1rem 2.4rem; rotate: 35deg; }
+}
+
+@keyframes sparkle-pulse {
+  0%, 100% { scale: 1; rotate: -4deg; }
+  50% { scale: 1.12; rotate: 3deg; }
+}
+
+@keyframes paw-hello {
+  0%, 100% { translate: 0 0; opacity: .58; }
+  50% { translate: 0 -.3rem; opacity: .9; }
+}
