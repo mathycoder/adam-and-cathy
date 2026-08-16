@@ -18,9 +18,7 @@ export function EventReveal({ chapter, index }: EventRevealProps) {
   const ref = useRef<HTMLElement>(null);
   const [skipReveal, setSkipReveal] = useState(false);
   const hasOpened = useRef(false);
-  const hasCompleted = useRef(false);
-  const isSkipping = useRef(false);
-  const lastSkipDirection = useRef<"up" | "down" | null>(null);
+  const isCommittingOpen = useRef(false);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const anchor = index % 2 === 0 ? "24%" : "76%";
   const restingRotation = index % 2 === 0 ? -11 : 11;
@@ -74,49 +72,26 @@ export function EventReveal({ chapter, index }: EventRevealProps) {
     const previous = scrollYProgress.getPrevious() ?? current;
 
     if (current >= 0.7) hasOpened.current = true;
-    if (current >= 0.999) hasCompleted.current = true;
-    if (isSkipping.current || current === previous) return;
+    if (skipReveal || isCommittingOpen.current || current === previous) return;
 
-    const section = ref.current;
-    if (!section) return;
+    const completedReveal = current >= 0.999;
+    const reversedAfterOpening = current < previous && hasOpened.current;
+    if (!completedReveal && !reversedAfterOpening) return;
 
-    const skipTo = (top: number, direction: "up" | "down") => {
-      isSkipping.current = true;
-      lastSkipDirection.current = direction;
-
-      // Commit the open presentation before changing scroll position. Without
-      // this synchronous commit, touch browsers can paint the progress-zero
-      // frame for a moment while crossing the sticky boundary.
-      if (!skipReveal) flushSync(() => setSkipReveal(true));
-
-      const root = document.documentElement;
-      const previousScrollBehavior = root.style.scrollBehavior;
-      const previousScrollSnapType = root.style.scrollSnapType;
-      root.style.scrollBehavior = "auto";
-      root.style.scrollSnapType = "none";
-      window.scrollTo({ top, left: 0, behavior: "auto" });
-
-      requestAnimationFrame(() => {
-        root.style.scrollBehavior = previousScrollBehavior;
-        root.style.scrollSnapType = previousScrollSnapType;
-        isSkipping.current = false;
-      });
-    };
-
-    const sectionTop = window.scrollY + section.getBoundingClientRect().top;
-    const sectionEnd = sectionTop + section.offsetHeight - window.innerHeight;
-    const documentEnd = document.documentElement.scrollHeight - window.innerHeight;
-
-    if (current < previous && hasOpened.current && current > 0.001 && lastSkipDirection.current !== "up") {
-      hasCompleted.current = true;
-      skipTo(Math.max(0, sectionTop - 2), "up");
-    } else if (current > previous && hasCompleted.current && skipReveal && previous <= 0.01 && lastSkipDirection.current !== "down") {
-      skipTo(Math.min(documentEnd, sectionEnd + 2), "down");
-    }
+    // Once the photograph is open, remove the long reveal runway instead of
+    // jumping across it with window.scrollTo(). Programmatic scrolling cancels
+    // touch momentum on iOS; collapsing the stage lets native scrolling remain
+    // continuous in either direction while preserving the open presentation.
+    isCommittingOpen.current = true;
+    flushSync(() => setSkipReveal(true));
   });
 
   return (
-    <section ref={ref} className="relative h-[352vh] bg-cream" aria-labelledby={`event-${index}`}>
+    <section
+      ref={ref}
+      className={cn("relative bg-cream", skipReveal ? "h-svh" : "h-[352vh]")}
+      aria-labelledby={`event-${index}`}
+    >
       <div className="sticky top-0 h-svh overflow-hidden">
         <svg className={cn("absolute inset-0 h-full w-full", index % 2 && "-scale-x-100")} viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
           <IllustratedTrail d="M240 0 L240 70 C240 140 545 120 525 290 C510 408 322 420 240 500 C126 610 118 720 278 835 C278 865 240 885 240 930 L240 1000" />
