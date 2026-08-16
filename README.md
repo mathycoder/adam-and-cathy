@@ -96,6 +96,8 @@ Every event uses the same normalized progress timeline:
 The physical scroll distance is set by `.eventSection` in `page.module.css`. The normalized phase timing lives in `EventReveal.tsx`.
 The text travels 64px on larger screens and 32px at the mobile breakpoint while using the same scroll timing.
 
+Reveals are one-way during a page visit. After a photograph reaches its open state, reversing direction keeps the photograph and text open and skips across that event's pinned animation range. Re-entering the same opened event from above also skips the reveal, so revisiting a chapter does not introduce an inactive pinned interval.
+
 ## Deployment
 
 The repository is ready for Vercel. Import the GitHub repository into Vercel and use the detected Next.js defaults; no environment variables are currently required.
