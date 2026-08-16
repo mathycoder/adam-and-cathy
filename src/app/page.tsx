@@ -17,6 +17,7 @@ export default function Home() {
         </div>
       ))}
 
+      <WindingPath index={chapters.length} />
       <StoryFinale />
     </main>
   );

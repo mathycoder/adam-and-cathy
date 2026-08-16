@@ -16,7 +16,7 @@ export function WindingPath({ index }: { index: number }) {
       <svg className={mirrored ? styles.mirroredPath : undefined} viewBox="0 0 1000 4000" preserveAspectRatio="none" aria-hidden="true">
         <path d={path} />
       </svg>
-      {index >= 4 && (
+      {index >= 5 && (
         <div className={styles.pathPaws} aria-hidden="true">
           <PawPrint />
           <PawPrint />

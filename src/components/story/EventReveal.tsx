@@ -60,9 +60,20 @@ export function EventReveal({ chapter, index }: EventRevealProps) {
       isSkipping.current = true;
       setSkipReveal(true);
 
+      // The page normally uses smooth scrolling. Temporarily disable it (and
+      // scroll snapping) so a reverse-scroll skip is a single synchronous
+      // jump on touch browsers instead of a new animated, sticky scroll.
+      const root = document.documentElement;
+      const previousScrollBehavior = root.style.scrollBehavior;
+      const previousScrollSnapType = root.style.scrollSnapType;
+      root.style.scrollBehavior = "auto";
+      root.style.scrollSnapType = "none";
+
       requestAnimationFrame(() => {
-        window.scrollTo(0, top);
+        window.scrollTo({ top, left: 0, behavior: "auto" });
         requestAnimationFrame(() => {
+          root.style.scrollBehavior = previousScrollBehavior;
+          root.style.scrollSnapType = previousScrollSnapType;
           isSkipping.current = false;
         });
       });

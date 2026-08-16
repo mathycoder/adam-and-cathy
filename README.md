@@ -1,6 +1,6 @@
 # When Adam Met Cathy
 
-A mobile-first, scroll-driven wedding story built with Next.js. Guests follow a winding path through five photographs, from Adam and Cathy's first walk in Central Park to welcoming Charlie, before the wedding-day finale.
+A mobile-first, scroll-driven wedding story built with Next.js. Guests follow a winding path through five photographs, from Adam and Cathy's first walk in Central Park to welcoming Charlie, then follow one final stretch to the wedding-day finale.
 
 ## Tech stack
 
