@@ -89,22 +89,56 @@ export function EventReveal({ chapter, index }: EventRevealProps) {
   useEffect(() => {
     if (isCondensed) return;
 
+    let settleTimer: ReturnType<typeof setTimeout> | undefined;
+
     const compactPassedStage = () => {
       const section = ref.current;
       if (!section || !hasCommittedOpen.current) return;
 
-      // Compact only after the entire open photograph has left the viewport.
-      // Changing the section while it is visible causes mobile Safari to fight
-      // the active gesture; changing content above the viewport lets native
-      // scroll anchoring preserve the visible path and its momentum.
-      if (section.getBoundingClientRect().bottom <= 0) setIsCondensed(true);
+      const before = section.getBoundingClientRect();
+      if (before.bottom > 0) return;
+
+      const scrollBefore = window.scrollY;
+      const heightBefore = section.offsetHeight;
+      flushSync(() => setIsCondensed(true));
+
+      // Removing an offscreen runway shifts everything below it upward. Move
+      // the scroll position by that exact amount in the same settled frame so
+      // the currently visible path stays pixel-for-pixel stationary.
+      const removedHeight = heightBefore - section.offsetHeight;
+      const root = document.documentElement;
+      const previousScrollBehavior = root.style.scrollBehavior;
+      const previousScrollSnapType = root.style.scrollSnapType;
+      root.style.scrollBehavior = "auto";
+      root.style.scrollSnapType = "none";
+      window.scrollTo({ top: Math.max(0, scrollBefore - removedHeight), left: 0, behavior: "auto" });
+
+      requestAnimationFrame(() => {
+        root.style.scrollBehavior = previousScrollBehavior;
+        root.style.scrollSnapType = previousScrollSnapType;
+      });
     };
 
-    window.addEventListener("scroll", compactPassedStage, { passive: true });
-    compactPassedStage();
+    const scheduleCompaction = () => {
+      const section = ref.current;
+      if (!section || !hasCommittedOpen.current || section.getBoundingClientRect().bottom > 0) return;
+      if (settleTimer) clearTimeout(settleTimer);
+      settleTimer = setTimeout(compactPassedStage, 160);
+    };
+
+    const finishCompaction = () => {
+      if (settleTimer) clearTimeout(settleTimer);
+      compactPassedStage();
+    };
+
+    window.addEventListener("scroll", scheduleCompaction, { passive: true });
+    window.addEventListener("scrollend", finishCompaction);
+    scheduleCompaction();
 
     return () => {
-      window.removeEventListener("scroll", compactPassedStage);
+      if (settleTimer) clearTimeout(settleTimer);
+      window.removeEventListener("scroll", scheduleCompaction);
+      window.removeEventListener("scrollend", finishCompaction);
     };
   }, [isCondensed, skipReveal]);
 
