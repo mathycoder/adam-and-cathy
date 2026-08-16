@@ -3,6 +3,7 @@ import styles from "@/app/page.module.css";
 import type { PathScene } from "@/data/story";
 import { IllustratedTrail } from "./IllustratedTrail";
 import { MovingPathScene } from "./MovingPathScene";
+import { PathScenery } from "./PathScenery";
 
 type WindingPathProps = {
   index: number;
@@ -25,8 +26,13 @@ export function WindingPath({ index, scene }: WindingPathProps) {
         <IllustratedTrail d={path} />
       </svg>
       {scene === "moving" && <MovingPathScene />}
+      {scene && scene !== "moving" && <PathScenery scene={scene} />}
       {index >= 5 && (
         <div className={styles.pathPaws} aria-hidden="true">
+          <PawPrint />
+          <PawPrint />
+          <PawPrint />
+          <PawPrint />
           <PawPrint />
           <PawPrint />
           <PawPrint />

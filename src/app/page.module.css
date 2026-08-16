@@ -34,9 +34,15 @@
 .firstPathSection { height: 100vh; }
 .pathSection > svg { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .mirroredPath { transform: scaleX(-1); }
-.pathPaws { position: absolute; z-index: 3; right: 12%; bottom: 16%; display: flex; gap: 2rem; color: var(--green-dark); opacity: .72; transform: rotate(-26deg); }
-.pathPaws svg:nth-child(2) { transform: translateY(-1.4rem) rotate(14deg); }
-.pathPaws svg:nth-child(3) { transform: translateY(-2.7rem) rotate(-8deg); }
+.pathPaws { position: absolute; z-index: 3; inset: 0; color: var(--green-dark); pointer-events: none; }
+.pathPaws svg { position: absolute; width: clamp(1.8rem, 3vw, 3.1rem); fill: rgba(175, 201, 155, .32); stroke-width: 1.45; opacity: .76; animation: pawHello 3.6s ease-in-out infinite; }
+.pathPaws svg:nth-child(1) { top: 6%; left: 22%; transform: rotate(-14deg); }
+.pathPaws svg:nth-child(2) { top: 18%; left: 28%; animation-delay: -.45s; transform: rotate(12deg); }
+.pathPaws svg:nth-child(3) { top: 33%; left: 61%; animation-delay: -.9s; transform: rotate(-16deg); }
+.pathPaws svg:nth-child(4) { top: 48%; left: 74%; animation-delay: -1.35s; transform: rotate(14deg); }
+.pathPaws svg:nth-child(5) { top: 64%; left: 54%; animation-delay: -1.8s; transform: rotate(-12deg); }
+.pathPaws svg:nth-child(6) { top: 79%; left: 29%; animation-delay: -2.25s; transform: rotate(15deg); }
+.pathPaws svg:nth-child(7) { top: 91%; left: 69%; animation-delay: -2.7s; transform: rotate(-10deg); }
 
 .movingScene { position: absolute; z-index: 2; inset: 0; color: var(--green-dark); pointer-events: none; }
 .sceneCluster { position: absolute; display: flex; align-items: flex-end; gap: .35rem; filter: drop-shadow(0 3px 0 rgba(235, 224, 210, .9)); }
@@ -81,6 +87,78 @@
 .firstLeaf { top: 52%; right: 18%; }
 .secondLeaf { right: 29%; bottom: 14%; animation-delay: -3.4s; transform: scale(.72) rotate(20deg); }
 
+.pathScenery { position: absolute; z-index: 2; inset: 0; overflow: hidden; color: var(--green-dark); pointer-events: none; }
+.sketchCluster { position: absolute; display: flex; align-items: flex-end; gap: .35rem; filter: drop-shadow(0 3px 0 rgba(235, 224, 210, .88)); }
+.sketchCluster > svg { flex: none; width: clamp(2.8rem, 5vw, 5.4rem); height: auto; fill: rgba(175, 201, 155, .16); stroke-width: 1.45; }
+.sketchCluster > .lineLandmark { width: clamp(3.5rem, 5vw, 5.25rem); fill: none; stroke: currentColor; stroke-width: 2.5; }
+.sketchCluster > .wideLandmark { width: clamp(7rem, 12vw, 11rem); fill: rgba(235, 224, 210, .38); stroke: currentColor; stroke-width: 2.5; }
+.sketchCluster span {
+  padding: .18rem .45rem .25rem;
+  color: var(--green-dark);
+  background: rgba(235, 224, 210, .9);
+  border-radius: 999px;
+  font-family: var(--font-script);
+  font-size: clamp(1.05rem, 2vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.openingSkyline { top: 3%; left: 4%; transform: rotate(-2deg); }
+.openingSkyline > svg:first-child,
+.openingSkyline > svg:nth-child(3) { width: clamp(2.7rem, 4vw, 4.2rem); }
+.openingSkyline span { position: absolute; top: calc(100% + .35rem); left: .4rem; }
+.openingTreesA { top: 7%; right: 3%; transform-origin: bottom center; animation: sceneSway 5.8s ease-in-out infinite; }
+.openingTreesB { top: 29%; left: 2%; transform-origin: bottom center; animation: sceneSway 6.4s -2s ease-in-out infinite; }
+.openingParkSign { top: 31%; right: 3%; align-items: center; transform: rotate(3deg); }
+.openingParkSign span { margin-left: -1.1rem; }
+.openingTreesC { top: 48%; right: 3%; transform-origin: bottom center; animation: sceneSway 6s -3.2s ease-in-out infinite; }
+.openingBench { top: 60%; left: 3%; align-items: center; transform: rotate(-2deg); }
+.openingBench > svg:last-child { width: clamp(2rem, 3vw, 3rem); margin-left: -1.1rem; }
+.openingTreesD { right: 4%; bottom: 6%; transform-origin: bottom center; animation: sceneSway 6.8s -1.1s ease-in-out infinite; }
+
+.sceneryLeaf { position: absolute; width: clamp(1.35rem, 2.2vw, 2.2rem); stroke-width: 1.5; opacity: .7; animation: leafDrift 7s ease-in-out infinite; }
+.openingLeafA { top: 23%; left: 20%; transform: rotate(18deg); }
+.openingLeafB { right: 19%; bottom: 30%; animation-delay: -3.6s; transform: scale(.8) rotate(-14deg); }
+
+.brownstoneRow { top: 6%; right: 4%; transform: rotate(2deg); }
+.brownstoneRow > svg:nth-child(2) { width: clamp(3.4rem, 6vw, 6.2rem); }
+.brownstoneRow span { position: absolute; top: calc(100% + .45rem); right: .3rem; }
+.brooklynBridge { top: 31%; left: 3%; align-items: center; transform: rotate(-2deg); }
+.brooklynBridge span { margin-left: -2rem; }
+.homeHeart { top: 58%; right: 9%; align-items: center; transform: rotate(4deg); }
+.homeHeart > svg:last-child { width: clamp(1.8rem, 3vw, 3rem); margin-left: -.8rem; fill: rgba(175, 201, 155, .45); }
+.neighborhoodTrees { bottom: 7%; left: 4%; transform-origin: bottom center; animation: sceneSway 6.2s -2.4s ease-in-out infinite; }
+.neighborhoodTrees > svg:nth-child(2) { width: clamp(4rem, 7vw, 7rem); }
+
+.returnSkyline { top: 5%; right: 4%; transform: rotate(2deg); }
+.returnSkyline > svg:first-child,
+.returnSkyline > svg:nth-child(3) { width: clamp(2.7rem, 4vw, 4.2rem); }
+.returnSkyline span { position: absolute; top: calc(100% + .35rem); right: .4rem; }
+.returnParkTrees { top: 29%; left: 3%; transform-origin: bottom center; animation: sceneSway 6s -1.7s ease-in-out infinite; }
+.returnBench { top: 49%; right: 3%; align-items: center; transform: rotate(2deg); }
+.returnBench > svg:last-child { width: clamp(2rem, 3vw, 3rem); margin-left: -1.1rem; }
+.proposalSpark { bottom: 14%; left: 7%; align-items: center; transform: rotate(-4deg); }
+.proposalSpark > svg { width: clamp(2.4rem, 4vw, 4.4rem); }
+.proposalSpark > svg:nth-child(2) { width: clamp(3.4rem, 5.5vw, 5.8rem); animation: sparklePulse 2.6s ease-in-out infinite; }
+.proposalSpark > svg:nth-child(3) { width: clamp(1.7rem, 2.5vw, 2.6rem); margin-left: -.8rem; fill: rgba(175, 201, 155, .45); }
+.proposalSpark span { position: absolute; top: calc(100% + .5rem); left: 1.2rem; }
+.returnLeafA { top: 21%; left: 24%; transform: rotate(-15deg); }
+.returnLeafB { right: 21%; bottom: 32%; animation-delay: -3.2s; transform: scale(.78) rotate(22deg); }
+
+.charliePawTrail { position: absolute; inset: 0; }
+.charliePawTrail svg { position: absolute; width: clamp(1.8rem, 3.2vw, 3.3rem); color: var(--green-dark); fill: rgba(175, 201, 155, .28); stroke-width: 1.45; opacity: .76; animation: pawHello 3.6s ease-in-out infinite; }
+.charliePawTrail svg:nth-child(1) { top: 7%; left: 73%; transform: rotate(-12deg); }
+.charliePawTrail svg:nth-child(2) { top: 20%; left: 79%; animation-delay: -.5s; transform: rotate(12deg); }
+.charliePawTrail svg:nth-child(3) { top: 36%; left: 61%; animation-delay: -1s; transform: rotate(-18deg); }
+.charliePawTrail svg:nth-child(4) { top: 52%; left: 27%; animation-delay: -1.5s; transform: rotate(16deg); }
+.charliePawTrail svg:nth-child(5) { top: 68%; left: 34%; animation-delay: -2s; transform: rotate(-10deg); }
+.charliePawTrail svg:nth-child(6) { top: 82%; left: 67%; animation-delay: -2.5s; transform: rotate(14deg); }
+.charlieTeaser { right: 5%; bottom: 8%; align-items: center; transform: rotate(3deg); }
+.charlieTeaser > svg:nth-child(2) { width: clamp(3.8rem, 6.5vw, 6.8rem); }
+.charlieTeaser > svg:last-of-type { width: clamp(1.6rem, 2.5vw, 2.6rem); margin-left: -.65rem; fill: rgba(175, 201, 155, .5); }
+.charlieTeaser span { position: absolute; top: calc(100% + .45rem); right: 0; }
+
 .eventSection { position: relative; height: 352vh; background: var(--cream); }
 .eventStage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
 .eventPath { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -120,6 +198,8 @@
   0%, 100% { translate: 0 0; rotate: -12deg; }
   50% { translate: -1.1rem 2.4rem; rotate: 35deg; }
 }
+@keyframes sparklePulse { 0%, 100% { scale: 1; rotate: -4deg; } 50% { scale: 1.12; rotate: 3deg; } }
+@keyframes pawHello { 0%, 100% { translate: 0 0; opacity: .58; } 50% { translate: 0 -.3rem; opacity: .9; } }
 
 @media (max-width: 700px) {
   .pathSection { height: 180vh; }
@@ -137,6 +217,38 @@
   .southernTrees svg:nth-child(2) { width: 4.5rem; }
   .atlantaSign { right: 1%; bottom: 7%; }
   .movingTruck svg { width: 5.3rem; }
+  .sketchCluster { gap: .18rem; }
+  .sketchCluster > svg { width: 2.55rem; }
+  .sketchCluster > .lineLandmark { width: 3.1rem; }
+  .sketchCluster > .wideLandmark { width: 6.7rem; }
+  .sketchCluster span { font-size: 1rem; }
+  .openingSkyline { top: 4%; left: 1%; }
+  .openingSkyline > svg:first-child,
+  .openingSkyline > svg:nth-child(3),
+  .returnSkyline > svg:first-child,
+  .returnSkyline > svg:nth-child(3) { width: 2.35rem; }
+  .openingTreesA { top: 10%; right: -3%; }
+  .openingTreesB { top: 30%; left: -4%; }
+  .openingParkSign { top: 33%; right: -2%; }
+  .openingTreesC { top: 49%; right: -4%; }
+  .openingBench { top: 62%; left: -2%; }
+  .openingBench > svg:last-child,
+  .returnBench > svg:last-child { width: 1.8rem; }
+  .openingTreesD { right: -4%; bottom: 6%; }
+  .brownstoneRow { top: 7%; right: 0; }
+  .brooklynBridge { top: 31%; left: -3%; }
+  .homeHeart { right: 3%; }
+  .neighborhoodTrees { left: -3%; }
+  .returnSkyline { top: 6%; right: 0; }
+  .returnParkTrees { left: -4%; }
+  .returnBench { right: -2%; }
+  .proposalSpark { bottom: 15%; left: 2%; }
+  .proposalSpark > svg { width: 2.2rem; }
+  .proposalSpark > svg:nth-child(2) { width: 3.2rem; }
+  .charliePawTrail svg { width: 1.85rem; }
+  .pathPaws svg { width: 1.75rem; }
+  .charlieTeaser { right: 1%; bottom: 7%; }
+  .charlieTeaser > svg:nth-child(2) { width: 3.7rem; }
   .copy { padding: 1.4rem 1rem 1.6rem; transform: translateY(calc(var(--text-y-mobile) - 12px)); }
   .copy h2 { max-width: 100%; font-size: clamp(2.9rem, 13vw, 4.25rem); }
   .date { margin-top: 1rem; }
@@ -158,7 +270,17 @@
 @media (prefers-reduced-motion: reduce) {
   .openingLine svg,
   .southernTrees,
-  .fallingLeaf { animation: none; }
+  .fallingLeaf,
+  .openingTreesA,
+  .openingTreesB,
+  .openingTreesC,
+  .openingTreesD,
+  .neighborhoodTrees,
+  .returnParkTrees,
+  .sceneryLeaf,
+  .proposalSpark > svg:nth-child(2),
+  .charliePawTrail svg,
+  .pathPaws svg { animation: none; }
   .movingTruck {
     left: 61% !important;
     top: 24% !important;

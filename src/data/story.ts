@@ -1,5 +1,5 @@
 export type PhotoOrientation = "landscape" | "portrait";
-export type PathScene = "moving";
+export type PathScene = "first-walk" | "brooklyn" | "moving" | "engagement" | "charlie";
 
 export type StoryChapter = {
   title: string;
@@ -30,6 +30,9 @@ export const chapters = [
       position: "50% 72%",
       orientation: "portrait",
     },
+    approach: {
+      scene: "first-walk",
+    },
   },
   {
     title: "A Place of Our Own",
@@ -41,6 +44,9 @@ export const chapters = [
       alt: "Adam and Cathy together in their Brooklyn home",
       position: "50% 50%",
       orientation: "landscape",
+    },
+    approach: {
+      scene: "brooklyn",
     },
   },
   {
@@ -69,6 +75,9 @@ export const chapters = [
       position: "58% 60%",
       orientation: "landscape",
     },
+    approach: {
+      scene: "engagement",
+    },
   },
   {
     title: "And Then Came Charlie",
@@ -81,6 +90,9 @@ export const chapters = [
       alt: "Adam holding puppy Charlie on the day she joined the family",
       position: "38% 82%",
       orientation: "portrait",
+    },
+    approach: {
+      scene: "charlie",
     },
   },
 ] satisfies readonly StoryChapter[];
