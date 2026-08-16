@@ -23,12 +23,10 @@
 .eventPath { position: absolute; inset: 0; width: 100%; height: 100%; }
 .eventPath path { fill: none; stroke: var(--green); stroke-width: 14px; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .mirroredEventPath { transform: scaleX(-1); }
-.marker { --marker-size: clamp(4.5rem, 8vw, 5.75rem); position: absolute; z-index: 3; top: calc(50% - var(--marker-size) / 2); left: calc(var(--anchor) - var(--marker-size) / 2); display: grid; place-items: center; width: var(--marker-size); aspect-ratio: 1; color: var(--green); background: var(--cream); border: 5px solid var(--green); border-radius: 50%; }
-.marker svg { width: 44%; height: 44%; stroke-width: 1.7; }
-.photo { position: absolute; z-index: 2; inset: 0; width: 100vw; height: 100svh; overflow: hidden; color: #fffdf8; transform-origin: var(--anchor) 50%; pointer-events: none; isolation: isolate; }
+.photo { position: absolute; z-index: 2; top: 50%; width: min(92vw, 72rem); height: min(88svh, 52rem); overflow: hidden; color: #fffdf8; background: #fffdf8; border: clamp(7px, 1vw, 13px) solid #fffdf8; border-radius: 3px; box-shadow: 0 1.5rem 4rem rgba(37, 50, 38, .24); transform-origin: center; pointer-events: none; isolation: isolate; }
 .eventImage { z-index: -3; object-fit: cover; }
 .photoTexture, .scrim { position: absolute; inset: 0; }
-.photoTexture { z-index: -2; opacity: .75; background: radial-gradient(circle at 24% 22%, rgba(255,255,255,.42), transparent 25%), radial-gradient(circle at 78% 68%, rgba(255,255,255,.2), transparent 24%), linear-gradient(140deg, transparent 32%, rgba(24,40,28,.27)); }
+.photoTexture { z-index: -2; opacity: .24; background: radial-gradient(circle at 24% 22%, rgba(255,255,255,.42), transparent 25%), radial-gradient(circle at 78% 68%, rgba(255,255,255,.2), transparent 24%), linear-gradient(140deg, transparent 32%, rgba(24,40,28,.27)); }
 .sage { background: #78927a; } .rose { background: #b78180; } .gold { background: #bd9252; } .blue { background: #6f8d98; } .peach { background: #b9785f; } .green { background: #467d4c; }
 .placeholder { position: absolute; inset: 0; z-index: -1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2rem; color: rgba(255,255,255,.7); font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; }
 .placeholder svg { width: clamp(7rem, 16vw, 12rem); height: clamp(7rem, 16vw, 12rem); }
@@ -54,7 +52,6 @@
   .pathSection { height: 180vh; }
   .firstPathSection { height: 100vh; }
   .pathSection path, .eventPath path, .heroPath path { stroke-width: 12px; }
-  .marker { --marker-size: 4.65rem; border-width: 4px; }
   .copy { padding: 2rem 1.4rem 3rem; }
   .copy h2 { font-size: clamp(4rem, 19vw, 6rem); }
   .sentence { max-width: 30rem; }

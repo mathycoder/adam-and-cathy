@@ -47,11 +47,10 @@ function EventReveal({ chapter, index }: { chapter: Chapter; index: number }) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const anchor = index % 2 === 0 ? "24%" : "76%";
-  const scale = useTransform(scrollYProgress, [0, 0.14, 0.34, 0.66, 0.86, 1], [0.055, 0.055, 1, 1, 0.055, 0.055]);
-  const borderRadius = useTransform(scrollYProgress, [0.1, 0.18, 0.34, 0.66, 0.82, 0.9], ["50%", "50%", "0%", "0%", "50%", "50%"]);
-  const photoOpacity = useTransform(scrollYProgress, [0.06, 0.13, 0.84, 0.92], [0, 1, 1, 0]);
-  const markerOpacity = useTransform(scrollYProgress, [0.09, 0.17, 0.82, 0.9], [1, 0, 0, 1]);
-  const markerScale = useTransform(scrollYProgress, [0, 0.14, 0.2, 0.8, 0.86, 1], [1, 1, 0.72, 0.72, 1, 1]);
+  const restingRotation = index % 2 === 0 ? -11 : 11;
+  const scale = useTransform(scrollYProgress, [0, 0.14, 0.34, 0.66, 0.86, 1], [0.18, 0.18, 1, 1, 0.18, 0.18]);
+  const rotate = useTransform(scrollYProgress, [0, 0.14, 0.34, 0.66, 0.86, 1], [restingRotation, restingRotation, 0, 0, restingRotation, restingRotation]);
+  const photoLeft = useTransform(scrollYProgress, [0, 0.14, 0.34, 0.66, 0.86, 1], [anchor, anchor, "50%", "50%", anchor, anchor]);
   const textOpacity = useTransform(scrollYProgress, [0.31, 0.4, 0.61, 0.7], [0, 1, 1, 0]);
   const textY = useTransform(scrollYProgress, [0.31, 0.43, 0.66], [32, 0, -20]);
   const Icon = chapter.icon;
@@ -64,10 +63,7 @@ function EventReveal({ chapter, index }: { chapter: Chapter; index: number }) {
         <svg className={`${styles.eventPath} ${index % 2 ? styles.mirroredEventPath : ""}`} viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
           <path d="M240 0 C240 105 545 120 525 290 C510 408 322 420 240 500 C126 610 118 720 278 835 C338 878 248 946 240 1000" />
         </svg>
-        <motion.div className={styles.marker} style={{ opacity: markerOpacity, scale: markerScale }} aria-hidden="true">
-          <Icon />
-        </motion.div>
-        <motion.article className={`${styles.photo} ${styles[chapter.tone]}`} style={{ scale, opacity: photoOpacity, borderRadius }}>
+        <motion.article className={`${styles.photo} ${styles[chapter.tone]}`} style={{ left: photoLeft, x: "-50%", y: "-50%", scale, rotate }}>
           {eventImage && (
             <Image
               className={styles.eventImage}
@@ -81,7 +77,7 @@ function EventReveal({ chapter, index }: { chapter: Chapter; index: number }) {
           )}
           <div className={styles.photoTexture} aria-hidden="true" />
           {!eventImage && <div className={styles.placeholder} aria-hidden="true"><Icon strokeWidth={1.1} /><span>Portrait photo</span></div>}
-          <div className={styles.scrim} />
+          <motion.div className={styles.scrim} style={{ opacity: textOpacity }} />
           <motion.div className={styles.copy} style={{ opacity: textOpacity, y: textY }}>
             <p className={styles.number}>Chapter {String(index + 1).padStart(2, "0")}</p>
             <h2 id={`event-${index}`}>{chapter.title}</h2>
