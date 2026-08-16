@@ -30,7 +30,7 @@
 .photoTexture, .scrim { position: absolute; inset: 0; }
 .photoTexture { z-index: -2; opacity: .24; background: radial-gradient(circle at 24% 22%, rgba(255,255,255,.42), transparent 25%), radial-gradient(circle at 78% 68%, rgba(255,255,255,.2), transparent 24%), linear-gradient(140deg, transparent 32%, rgba(24,40,28,.27)); }
 .scrim { background: linear-gradient(to top, rgba(17,27,19,.82), rgba(17,27,19,.02) 70%); }
-.copy { position: absolute; z-index: 1; right: 0; bottom: 0; left: 0; padding: clamp(2rem, 7vw, 6rem); }
+.copy { position: absolute; z-index: 1; right: 0; bottom: 0; left: 0; padding: clamp(2rem, 7vw, 6rem); transform: translateY(var(--text-y-desktop)); }
 .number, .date, .location { font-size: clamp(.65rem, 1.3vw, .88rem); letter-spacing: .19em; text-transform: uppercase; }
 .number { margin-bottom: .6rem; opacity: .62; }
 .copy h2 { max-width: 10ch; font-family: var(--font-script); font-size: clamp(4.3rem, 10vw, 9rem); font-weight: 500; line-height: .75; }
@@ -51,7 +51,7 @@
   .pathSection { height: 180vh; }
   .firstPathSection { height: 100vh; }
   .pathSection path, .eventPath path, .heroPath path { stroke-width: 12px; }
-  .copy { padding: 2rem 1.4rem 3rem; }
+  .copy { padding: 2rem 1.4rem 3rem; transform: translateY(var(--text-y-mobile)); }
   .copy h2 { font-size: clamp(4rem, 19vw, 6rem); }
   .sentence { max-width: 30rem; }
 }

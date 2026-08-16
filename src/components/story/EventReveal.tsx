@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { MapPin } from "lucide-react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, type MotionStyle, useScroll, useTransform } from "motion/react";
 import { type CSSProperties, useRef } from "react";
 import styles from "@/app/page.module.css";
 import type { StoryChapter } from "@/data/story";
@@ -27,8 +27,14 @@ export function EventReveal({ chapter, index }: EventRevealProps) {
   const rotate = useTransform(scrollYProgress, revealRange, [restingRotation, 0, 0]);
   const photoLeft = useTransform(scrollYProgress, revealRange, [anchor, "50%", "50%"]);
   const textOpacity = useTransform(scrollYProgress, [0.533, 0.733, 1], [0, 1, 1]);
-  const textY = useTransform(scrollYProgress, [0.533, 1], [64, 0]);
+  const textYDesktop = useTransform(scrollYProgress, [0.533, 1], ["64px", "0px"]);
+  const textYMobile = useTransform(scrollYProgress, [0.533, 1], ["32px", "0px"]);
   const position = { "--anchor": anchor } as CSSProperties;
+  const copyStyle = {
+    opacity: textOpacity,
+    "--text-y-desktop": textYDesktop,
+    "--text-y-mobile": textYMobile,
+  } as MotionStyle;
   const orientationClass = chapter.photo.orientation === "portrait" ? styles.portraitPhoto : styles.landscapePhoto;
 
   return (
@@ -52,7 +58,7 @@ export function EventReveal({ chapter, index }: EventRevealProps) {
           />
           <div className={styles.photoTexture} aria-hidden="true" />
           <motion.div className={styles.scrim} style={{ opacity: textOpacity }} />
-          <motion.div className={styles.copy} style={{ opacity: textOpacity, y: textY }}>
+          <motion.div className={styles.copy} style={copyStyle}>
             <p className={styles.number}>Chapter {String(index + 1).padStart(2, "0")}</p>
             <h2 id={`event-${index}`}>{chapter.title}</h2>
             <p className={styles.date}>{chapter.date}</p>

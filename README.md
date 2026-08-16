@@ -89,11 +89,12 @@ Every event uses the same normalized progress timeline:
 | Progress | Behavior |
 | --- | --- |
 | `0 → 0.533` | The photograph immediately grows, straightens, and moves toward center as the stage pins. |
-| `0.533 → 0.7` | The text appears and begins its 64px journey while the photograph finishes opening. |
+| `0.533 → 0.7` | The text appears and begins moving while the photograph finishes opening. |
 | `0.7 → 1` | The fully open photograph holds only while the text gently completes its movement. |
 | After `1` | The sticky stage immediately releases, so the open photograph scrolls naturally out of view and reveals the next path. |
 
 The physical scroll distance is set by `.eventSection` in `page.module.css`. The normalized phase timing lives in `EventReveal.tsx`.
+The text travels 64px on larger screens and 32px at the mobile breakpoint while using the same scroll timing.
 
 ## Deployment
 
