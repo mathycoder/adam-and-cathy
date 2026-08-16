@@ -1,5 +1,6 @@
 import { MoveDown } from "lucide-react";
 import styles from "@/app/page.module.css";
+import { IllustratedTrail } from "./IllustratedTrail";
 
 export function StoryHero() {
   return (
@@ -12,7 +13,7 @@ export function StoryHero() {
         It started with a walk in the park… <MoveDown aria-hidden="true" />
       </p>
       <svg className={styles.heroPath} viewBox="0 0 1000 400" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M500 0 C675 86 316 178 515 270 C635 326 460 360 500 400" />
+        <IllustratedTrail d="M500 0 L500 400" />
       </svg>
     </header>
   );

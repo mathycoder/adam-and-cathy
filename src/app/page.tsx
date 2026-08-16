@@ -12,7 +12,7 @@ export default function Home() {
 
       {chapters.map((chapter, index) => (
         <div key={chapter.title}>
-          <WindingPath index={index} />
+          <WindingPath index={index} scene={chapter.approach?.scene} />
           <EventReveal chapter={chapter} index={index} />
         </div>
       ))}

@@ -1,7 +1,9 @@
 export type PhotoOrientation = "landscape" | "portrait";
+export type PathScene = "moving";
 
 export type StoryChapter = {
   title: string;
+  titleScale?: "compact";
   date: string;
   location: string;
   sentence: string;
@@ -10,6 +12,9 @@ export type StoryChapter = {
     alt: string;
     position: string;
     orientation: PhotoOrientation;
+  };
+  approach?: {
+    scene: PathScene;
   };
 };
 
@@ -49,6 +54,9 @@ export const chapters = [
       position: "50% 48%",
       orientation: "landscape",
     },
+    approach: {
+      scene: "moving",
+    },
   },
   {
     title: "She Said Yes",
@@ -64,6 +72,7 @@ export const chapters = [
   },
   {
     title: "And Then Came Charlie",
+    titleScale: "compact",
     date: "March 2025",
     location: "Atlanta, Georgia",
     sentence: "Charlie joined the family and quickly became the star of the show.",

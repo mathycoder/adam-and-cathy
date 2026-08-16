@@ -1,4 +1,9 @@
-.page { background: var(--cream); overflow: clip; }
+.page {
+  --trail-surface: #afc99b;
+  --trail-highlight: #d7dfbd;
+  background: var(--cream);
+  overflow: clip;
+}
 
 .hero { position: relative; min-height: 100svh; display: grid; place-content: center; justify-items: center; padding: 4rem 1.5rem; text-align: center; }
 .hero > p { color: var(--green-dark); font-size: .78rem; letter-spacing: .2em; text-transform: uppercase; }
@@ -6,24 +11,81 @@
 .hero h1 span { display: block; margin-top: .25em; transform: translateX(.2em) rotate(-2deg); }
 .openingLine { display: flex; align-items: center; gap: .7rem; margin-top: 3rem; color: var(--green-dark); font-family: var(--font-script); font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1; transform: rotate(-2deg); }
 .openingLine svg { width: 1.2rem; animation: nudge 1.8s ease-in-out infinite; }
-.heroPath { position: absolute; right: 0; bottom: 0; left: 0; width: 100%; height: 12vh; }
-.heroPath path { fill: none; stroke: var(--green); stroke-width: 14px; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.heroPath { position: absolute; right: 0; bottom: 0; left: 0; width: 100%; height: 15vh; overflow: visible; }
+
+.trailOutline,
+.trailSurface,
+.trailTexture {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.trailOutline { stroke: var(--green-dark); stroke-width: 92px; }
+.trailSurface { stroke: var(--trail-surface); stroke-width: 78px; }
+.trailTexture {
+  stroke: var(--trail-highlight);
+  stroke-width: 5px;
+  stroke-dasharray: 1 25;
+  opacity: .72;
+}
 
 .pathSection { position: relative; height: 200vh; background: var(--cream); }
 .firstPathSection { height: 100vh; }
-.pathSection svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.pathSection path { fill: none; stroke: var(--green); stroke-width: 14px; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.pathSection > svg { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .mirroredPath { transform: scaleX(-1); }
-.pathPaws { position: absolute; right: 12%; bottom: 16%; display: flex; gap: 2rem; color: var(--green); opacity: .6; transform: rotate(-26deg); }
+.pathPaws { position: absolute; z-index: 3; right: 12%; bottom: 16%; display: flex; gap: 2rem; color: var(--green-dark); opacity: .72; transform: rotate(-26deg); }
 .pathPaws svg:nth-child(2) { transform: translateY(-1.4rem) rotate(14deg); }
 .pathPaws svg:nth-child(3) { transform: translateY(-2.7rem) rotate(-8deg); }
+
+.movingScene { position: absolute; z-index: 2; inset: 0; color: var(--green-dark); pointer-events: none; }
+.sceneCluster { position: absolute; display: flex; align-items: flex-end; gap: .35rem; filter: drop-shadow(0 3px 0 rgba(235, 224, 210, .9)); }
+.sceneCluster svg { stroke-width: 1.45; }
+.sceneCluster span,
+.movingTruck span {
+  color: var(--green-dark);
+  font-family: var(--font-script);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+.brooklynCluster { top: 7%; left: 5%; transform: rotate(-3deg); }
+.brooklynCluster svg { width: clamp(3.4rem, 6vw, 6rem); height: auto; }
+.brooklynCluster svg:nth-child(2) { width: clamp(4.2rem, 7vw, 7rem); }
+.brooklynCluster span { position: absolute; top: calc(100% + .65rem); left: 1rem; font-size: clamp(1.4rem, 2.5vw, 2.2rem); }
+.boxCluster { top: 31%; right: 7%; align-items: center; transform: rotate(5deg); }
+.boxCluster svg { width: clamp(2.9rem, 5vw, 5rem); height: auto; fill: rgba(175, 201, 155, .3); }
+.boxCluster svg:nth-child(2) { margin-bottom: 2.8rem; transform: rotate(-9deg); }
+.boxCluster svg:nth-child(3) { margin-left: -1.7rem; transform: rotate(8deg); }
+.southernTrees { top: 58%; left: 3%; transform-origin: bottom center; animation: sceneSway 5.5s ease-in-out infinite; }
+.southernTrees svg { width: clamp(4rem, 7vw, 7.2rem); height: auto; }
+.southernTrees svg:nth-child(2) { width: clamp(5rem, 8vw, 8rem); }
+.southernTrees svg:nth-child(3) { width: clamp(2.6rem, 4vw, 4rem); }
+.atlantaSign { right: 6%; bottom: 7%; align-items: center; transform: rotate(4deg); }
+.atlantaSign svg { width: clamp(5rem, 8vw, 8rem); height: auto; }
+.atlantaSign span { margin-left: -3.7rem; font-size: clamp(1.25rem, 2.2vw, 2rem); transform: rotate(-2deg); }
+.movingTruck { position: absolute; z-index: 4; display: grid; justify-items: center; gap: .35rem; transform-origin: center; }
+.movingTruck svg {
+  width: clamp(5.4rem, 9vw, 8.5rem);
+  height: auto;
+  padding: .45rem;
+  color: var(--green-dark);
+  background: rgba(235, 224, 210, .95);
+  border: 2px solid currentColor;
+  border-radius: .7rem .9rem .65rem .8rem;
+  stroke-width: 1.45;
+  box-shadow: .25rem .3rem 0 rgba(63, 119, 69, .14);
+}
+.movingTruck span { padding: .15rem .45rem .2rem; font-size: clamp(1rem, 1.8vw, 1.45rem); background: rgba(235, 224, 210, .9); border-radius: 999px; }
+.fallingLeaf { position: absolute; z-index: 3; width: clamp(1.5rem, 2.5vw, 2.4rem); color: var(--green); stroke-width: 1.5; opacity: .7; animation: leafDrift 7s ease-in-out infinite; }
+.firstLeaf { top: 52%; right: 18%; }
+.secondLeaf { right: 29%; bottom: 14%; animation-delay: -3.4s; transform: scale(.72) rotate(20deg); }
 
 .eventSection { position: relative; height: 352vh; background: var(--cream); }
 .eventStage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
 .eventPath { position: absolute; inset: 0; width: 100%; height: 100%; }
-.eventPath path { fill: none; stroke: var(--green); stroke-width: 14px; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .mirroredEventPath { transform: scaleX(-1); }
-.photo { position: absolute; z-index: 2; top: 50%; overflow: hidden; color: #fffdf8; background: #fffdf8; border: clamp(7px, 1vw, 13px) solid #fffdf8; border-radius: 3px; box-shadow: 0 1.5rem 4rem rgba(37, 50, 38, .24); transform-origin: center; pointer-events: none; isolation: isolate; }
+.photo { position: absolute; z-index: 2; top: 50%; overflow: hidden; color: #fffdf8; background: #fffdf8; border: clamp(7px, 1vw, 13px) solid #fffdf8; border-radius: 3px; box-shadow: 0 1.5rem 4rem rgba(37, 50, 38, .24); transform-origin: center; backface-visibility: hidden; pointer-events: none; isolation: isolate; }
 .landscapePhoto { width: min(92vw, 117.333svh, 72rem); aspect-ratio: 4 / 3; }
 .portraitPhoto { width: min(88vw, 58.667svh, 36rem); aspect-ratio: 2 / 3; }
 .eventImage { z-index: -3; object-fit: cover; }
@@ -39,6 +101,13 @@
 .location svg { width: .95rem; height: .95rem; }
 .sentence { max-width: 38rem; margin-top: 1.35rem; font-size: clamp(1rem, 2vw, 1.2rem); line-height: 1.65; }
 
+@media (min-width: 701px) {
+  .firstPhoto .copy { padding: clamp(2.25rem, 4vw, 3.5rem); }
+  .firstPhoto .copy h2 { max-width: 8ch; font-size: clamp(3.8rem, 5.2vw, 5.4rem); }
+  .compactTitlePhoto .copy { padding: clamp(2.25rem, 4vw, 3.5rem); }
+  .compactTitlePhoto .copy h2 { max-width: 8ch; font-size: clamp(3.25rem, 5.5vw, 5.4rem); }
+}
+
 .finale { min-height: 120svh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 5rem 1.5rem; color: var(--cream); background: var(--green); text-align: center; }
 .finale > div { display: flex; gap: .6rem; margin-bottom: 2rem; }
 .finale > p { font-family: var(--font-script); font-size: clamp(2.2rem, 6vw, 4.5rem); }
@@ -46,14 +115,54 @@
 .finale a { margin-top: 3rem; padding: 1rem .25rem; border-bottom: 1px solid currentColor; font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; }
 
 @keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(.45rem); } }
+@keyframes sceneSway { 0%, 100% { transform: rotate(-1deg); } 50% { transform: rotate(1.5deg); } }
+@keyframes leafDrift {
+  0%, 100% { translate: 0 0; rotate: -12deg; }
+  50% { translate: -1.1rem 2.4rem; rotate: 35deg; }
+}
 
 @media (max-width: 700px) {
   .pathSection { height: 180vh; }
   .firstPathSection { height: 100vh; }
-  .pathSection path, .eventPath path, .heroPath path { stroke-width: 12px; }
-  .copy { padding: 2rem 1.4rem 3rem; transform: translateY(var(--text-y-mobile)); }
-  .copy h2 { font-size: clamp(4rem, 19vw, 6rem); }
-  .sentence { max-width: 30rem; }
+  .trailOutline { stroke-width: 72px; }
+  .trailSurface { stroke-width: 60px; }
+  .trailTexture { stroke-width: 4px; stroke-dasharray: 1 20; }
+  .brooklynCluster { top: 8%; left: 2%; }
+  .brooklynCluster svg { width: 3rem; }
+  .brooklynCluster svg:nth-child(2) { width: 3.8rem; }
+  .boxCluster { top: 29%; right: 2%; }
+  .boxCluster svg { width: 2.7rem; }
+  .southernTrees { top: 58%; left: 0; }
+  .southernTrees svg { width: 3.6rem; }
+  .southernTrees svg:nth-child(2) { width: 4.5rem; }
+  .atlantaSign { right: 1%; bottom: 7%; }
+  .movingTruck svg { width: 5.3rem; }
+  .copy { padding: 1.4rem 1rem 1.6rem; transform: translateY(calc(var(--text-y-mobile) - 12px)); }
+  .copy h2 { max-width: 100%; font-size: clamp(2.9rem, 13vw, 4.25rem); }
+  .date { margin-top: 1rem; }
+  .location { margin-top: .45rem; }
+  .sentence { max-width: 30rem; margin-top: .8rem; font-size: .9rem; line-height: 1.45; }
+  .compactTitlePhoto .copy h2 { font-size: clamp(2.7rem, 12vw, 3.9rem); }
+
+  .landscapePhoto .copy { padding: .8rem 1rem 1rem; }
+  .landscapePhoto .number,
+  .landscapePhoto .date,
+  .landscapePhoto .location { font-size: .56rem; letter-spacing: .12em; }
+  .landscapePhoto .number { margin-bottom: .2rem; }
+  .landscapePhoto .copy h2 { font-size: clamp(2.15rem, 9.8vw, 3rem); line-height: .8; }
+  .landscapePhoto .date { margin-top: .45rem; }
+  .landscapePhoto .location { margin-top: .25rem; }
+  .landscapePhoto .sentence { margin-top: .45rem; font-size: .78rem; line-height: 1.3; }
 }
 
-@media (prefers-reduced-motion: reduce) { .openingLine svg { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .openingLine svg,
+  .southernTrees,
+  .fallingLeaf { animation: none; }
+  .movingTruck {
+    left: 61% !important;
+    top: 24% !important;
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(-50%) rotate(4deg) !important;
+  }
+}
