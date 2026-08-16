@@ -89,8 +89,6 @@ export function EventReveal({ chapter, index }: EventRevealProps) {
   useEffect(() => {
     if (isCondensed) return;
 
-    let settleTimer: ReturnType<typeof setTimeout> | undefined;
-
     const compactPassedStage = () => {
       const section = ref.current;
       if (!section || !hasCommittedOpen.current) return;
@@ -119,26 +117,22 @@ export function EventReveal({ chapter, index }: EventRevealProps) {
       });
     };
 
-    const scheduleCompaction = () => {
-      const section = ref.current;
-      if (!section || !hasCommittedOpen.current || section.getBoundingClientRect().bottom > 0) return;
-      if (settleTimer) clearTimeout(settleTimer);
-      settleTimer = setTimeout(compactPassedStage, 160);
-    };
-
     const finishCompaction = () => {
-      if (settleTimer) clearTimeout(settleTimer);
       compactPassedStage();
     };
 
-    window.addEventListener("scroll", scheduleCompaction, { passive: true });
+    const prepareForTouch = () => {
+      // This runs before the finger moves. It is also the fallback for mobile
+      // browsers without `scrollend`, and cannot cancel an in-flight gesture.
+      compactPassedStage();
+    };
+
     window.addEventListener("scrollend", finishCompaction);
-    scheduleCompaction();
+    window.addEventListener("touchstart", prepareForTouch, { passive: true });
 
     return () => {
-      if (settleTimer) clearTimeout(settleTimer);
-      window.removeEventListener("scroll", scheduleCompaction);
       window.removeEventListener("scrollend", finishCompaction);
+      window.removeEventListener("touchstart", prepareForTouch);
     };
   }, [isCondensed, skipReveal]);
 

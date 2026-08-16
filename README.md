@@ -174,7 +174,7 @@ Every event uses the same normalized progress timeline:
 The physical scroll distance is set by the `h-[352vh]` section utility in `EventReveal.tsx`. The normalized phase timing lives alongside it in that component.
 The text travels 64px on larger screens and 32px at the mobile breakpoint while using the same scroll timing.
 
-Reveals are one-way during a page visit. After a photograph reaches its open state, reversing direction keeps the photograph and text open and crosses that event's pinned range in one immediate jump. The open state is committed before moving the page so mobile browsers do not briefly paint the closed frame. Re-entering the same opened event from above also skips the reveal, so revisiting a chapter does not introduce an inactive pinned interval.
+Reveals are one-way during a page visit. After an open photograph has completely left the viewport, its long reveal runway is compacted to one viewport while preserving the currently visible scroll position. Reversing direction then crosses the already-open event through native scrolling rather than an imperative touch-scroll jump. The open state is committed before compaction so mobile browsers do not briefly paint the closed frame.
 
 ## Deployment
 
