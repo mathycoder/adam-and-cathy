@@ -74,16 +74,4 @@ export const chapters = [
       orientation: "portrait",
     },
   },
-  {
-    title: "We Tie the Knot",
-    date: "May 8, 2027",
-    location: "Atlanta, Georgia",
-    sentence: "Ten years and one day after we met, we begin our next chapter together.",
-    photo: {
-      src: "/images/we-tie-the-knot.jpg",
-      alt: "The Trolley Barn in Atlanta, Adam and Cathy's wedding venue",
-      position: "50% 54%",
-      orientation: "portrait",
-    },
-  },
 ] satisfies readonly StoryChapter[];

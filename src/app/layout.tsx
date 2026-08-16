@@ -7,7 +7,7 @@ const jost = Jost({ variable: "--font-jost", subsets: ["latin"], display: "swap"
 
 export const metadata: Metadata = {
   title: "When Adam Met Cathy",
-  description: "Six moments, two cities, one very good girl, and a lifetime still to come.",
+  description: "Five moments, two cities, one very good girl, and a lifetime still to come.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
