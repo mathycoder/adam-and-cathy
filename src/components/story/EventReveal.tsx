@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { MapPin } from "lucide-react";
 import { motion, type MotionStyle, useMotionValueEvent, useScroll, useTransform } from "motion/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import type { StoryChapter } from "@/data/story";
 import { cn } from "@/lib/cn";
@@ -17,8 +17,9 @@ type EventRevealProps = {
 export function EventReveal({ chapter, index }: EventRevealProps) {
   const ref = useRef<HTMLElement>(null);
   const [skipReveal, setSkipReveal] = useState(false);
+  const [isCondensed, setIsCondensed] = useState(false);
   const hasOpened = useRef(false);
-  const isCommittingOpen = useRef(false);
+  const hasCommittedOpen = useRef(false);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const anchor = index % 2 === 0 ? "24%" : "76%";
   const restingRotation = index % 2 === 0 ? -11 : 11;
@@ -72,24 +73,45 @@ export function EventReveal({ chapter, index }: EventRevealProps) {
     const previous = scrollYProgress.getPrevious() ?? current;
 
     if (current >= 0.7) hasOpened.current = true;
-    if (skipReveal || isCommittingOpen.current || current === previous) return;
+    if (hasCommittedOpen.current || current === previous) return;
 
     const completedReveal = current >= 0.999;
     const reversedAfterOpening = current < previous && hasOpened.current;
     if (!completedReveal && !reversedAfterOpening) return;
 
-    // Once the photograph is open, remove the long reveal runway instead of
-    // jumping across it with window.scrollTo(). Programmatic scrolling cancels
-    // touch momentum on iOS; collapsing the stage lets native scrolling remain
-    // continuous in either direction while preserving the open presentation.
-    isCommittingOpen.current = true;
+    // Commit the open presentation immediately so reverse scrolling never
+    // briefly paints the closed frame. The long runway is compacted separately
+    // after touch momentum settles instead of interrupting the active gesture.
+    hasCommittedOpen.current = true;
     flushSync(() => setSkipReveal(true));
   });
+
+  useEffect(() => {
+    if (isCondensed) return;
+
+    const compactPassedStage = () => {
+      const section = ref.current;
+      if (!section || !hasCommittedOpen.current) return;
+
+      // Compact only after the entire open photograph has left the viewport.
+      // Changing the section while it is visible causes mobile Safari to fight
+      // the active gesture; changing content above the viewport lets native
+      // scroll anchoring preserve the visible path and its momentum.
+      if (section.getBoundingClientRect().bottom <= 0) setIsCondensed(true);
+    };
+
+    window.addEventListener("scroll", compactPassedStage, { passive: true });
+    compactPassedStage();
+
+    return () => {
+      window.removeEventListener("scroll", compactPassedStage);
+    };
+  }, [isCondensed, skipReveal]);
 
   return (
     <section
       ref={ref}
-      className={cn("relative bg-cream", skipReveal ? "h-svh" : "h-[352vh]")}
+      className={cn("relative bg-cream", isCondensed ? "h-svh" : "h-[352vh]")}
       aria-labelledby={`event-${index}`}
     >
       <div className="sticky top-0 h-svh overflow-hidden">
